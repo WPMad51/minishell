@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 14:51:40 by cdutel            #+#    #+#             */
-/*   Updated: 2024/04/08 14:52:56 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/04/08 23:50:56 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,16 @@
 /*Builtins*/
 char	**unset_bltin(char **envp, char *to_unset);
 char	**export_bltin(char **envp, char *to_add);
+void	sort_and_print_env(char **env);
 void	env_bltin(char **envp);
 void	pwd_bltin(void);
 
 void	echo_bltin_v1(char *to_print, char *no_new_line);
 
-void	cd_bltin(char *dir);
+void	cd_bltin(char *dir, char ***env);
 /*Utils*/
 void	ft_le_xav(char **dest);
+
+char	**get_envp(char **envp);
 
 #endif

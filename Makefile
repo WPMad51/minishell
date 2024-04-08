@@ -10,7 +10,7 @@ SRCS = $(addprefix $(SRCS_DIR), $(FILES))
 
 BUILTIN_DIR = sources/builtins/
 FILES_BUILTIN = env_bltin.c pwd_bltin.c echo_bltin.c \
-				unset_bltin.c export_bltin.c cd_bltin.c \
+				unset_bltin.c export_bltin.c cd_bltin.c export_sort_bltin.c \
 
 SRCS_BUILTIN = $(addprefix $(BUILTIN_DIR), $(FILES_BUILTIN))
 

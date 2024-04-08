@@ -6,43 +6,66 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 01:22:49 by cdutel            #+#    #+#             */
-/*   Updated: 2024/04/04 09:29:59 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/04/09 00:48:06 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	cd_bltin(char *dir)
+static void	change_env(char	***env, char *pwd, char *oldpwd)
 {
-	char	*pwd = NULL;
-	char	*oldpwd = NULL;
-	char	*pwd_ptr = NULL;
+	int (i) = 0;
+	while ((*env)[i])
+	{
+		if (ft_strncmp("PWD=", (*env)[i], ft_strlen("PWD=")) == 0)
+		{
+			free((*env)[i]);
+			(*env)[i] = ft_strjoin("PWD=", pwd);
+		}
+		else if (ft_strncmp("OLDPWD=", (*env)[i], ft_strlen("OLDPWD=")) == 0)
+		{
+			free((*env)[i]);
+			(*env)[i] = ft_strjoin("OLDPWD=", oldpwd);
+		}
+		i++;
+	}
+}
+
+static void	cd_home(char ***env)
+{
+	char	*pwd;
+	char	*oldpwd;
+
+	pwd = getenv("PWD");
+	oldpwd = getenv("OLDPWD");
+	if (pwd != NULL && oldpwd != NULL)
+		ft_strcpy(oldpwd, pwd);
+	pwd = getenv("HOME");
+	if (chdir(pwd) == 0)
+		change_env(env, pwd, oldpwd);
+	else
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
+}
+
+void	cd_bltin(char *dir, char ***env)
+{
+	char	*pwd;
+	char	*oldpwd;
 
 	if (!dir)
+	{
+		cd_home(env);
 		return ;
+	}
 	if (chdir(dir) == 0)
 	{
 		pwd = getenv("PWD");
-		printf("pwd = %s\n", pwd);
-		//write(1, "ok1", 4);
 		oldpwd = getenv("OLDPWD");
-		printf("\noldpwd = %s\n", oldpwd);
-		//write(1, "ok2", 4);
 		if (pwd != NULL && oldpwd != NULL)
-			oldpwd = ft_strcpy(oldpwd, pwd);
-		//write(1, "ok3", 4);
-		if (pwd != NULL)
-		{
-			pwd = &pwd[-ft_strlen("PWD=")];
-			//write(1, "ok4", 4);
-			pwd_ptr = getcwd(pwd_ptr, 100);
-			//write(1, "ok5", 4);
-			printf("\npwd = %s\npwd_ptr = %s\n", pwd, pwd_ptr);
-			pwd = ft_strcpy(pwd, pwd_ptr);
-			//write(1, "ok6", 4);
-			free(pwd_ptr);
-			//write(1, "ok7\n", 5);
-		}
+			ft_strcpy(oldpwd, pwd);
+		pwd = getcwd(pwd, MAX_SIZE);
+		change_env(env, pwd, oldpwd);
 	}
-
+	else
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
 }

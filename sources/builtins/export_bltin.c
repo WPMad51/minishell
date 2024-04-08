@@ -6,13 +6,13 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 22:10:29 by cdutel            #+#    #+#             */
-/*   Updated: 2024/04/08 18:22:44 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/04/09 01:28:07 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	**add_env_line(char **env, char *to_add)
+static char	**add_line(char **env, char *to_add)
 {
 	char	**new_env;
 
@@ -67,14 +67,13 @@ static void	check_to_add(char *to_add, int *trigger)
 	int (i) = 0;
 	while (to_add[i])
 	{
-		if (i == 0 && to_add[i] == '=')
+		if ((i == 0 && to_add[i] == '=')
+			|| (to_add[i] == '=' && to_add[i - 1] == ' '))
 		{
 			*trigger = -1;
 			printf ("bash: export: '%s': not a valid identifier\n", to_add);
 			return ;
 		}
-		if (to_add[i] == '=')
-			*trigger = 1;
 		i++;
 	}
 }
@@ -83,20 +82,16 @@ char	**export_bltin(char **env, char *to_add)
 {
 	int (i) = 0;
 	int (trigger) = 0;
-	// if (!to_add)
-	// 	return (trier_afficher_env(), envp);
+	if (!to_add)
+		return (sort_and_print_env(env), env);
 	check_to_add(to_add, &trigger);
 	if (trigger == -1)
 		return (env);
-	if (trigger == 1)
+	while (env[i])
 	{
-		while (env[i])
-		{
-			if (ft_strncmp(env[i], to_add, ft_strlen_to_c(to_add, '=') + 1) == 0)
-				return (replace_line(env, to_add, i));
-			i++;
-		}
-		return (add_env_line(env, to_add));
+		if (ft_strncmp(env[i], to_add, ft_strlen_to_c(to_add, '=') + 1) == 0)
+			return (replace_line(env, to_add, i));
+		i++;
 	}
-	return (env);
+	return (add_line(env, to_add));
 }

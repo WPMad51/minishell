@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:58:05 by cdutel            #+#    #+#             */
-/*   Updated: 2024/04/04 10:33:37 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/04/08 20:45:51 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	env_bltin(char **envp)
 	{
 		while (envp[i])
 		{
-			printf("%s\n", envp[i]);
+			if (ft_strnstr(envp[i], "=", ft_strlen(envp[i])))
+				printf("%s\n", envp[i]);
 			i++;
 		}
 	}

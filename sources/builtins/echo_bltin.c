@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:16:23 by cdutel            #+#    #+#             */
-/*   Updated: 2024/04/04 11:56:26 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/04/09 01:25:46 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	writting(char *to_write)
 {
 	if (write(1, to_write, ft_strlen(to_write)) == -1)
 	{
-		strerror(errno);
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
 		return (-1);
 	}
 	return (0);
@@ -26,7 +26,7 @@ static void	print_new_line(void)
 {
 	if (write(1, "\n", 1) == -1)
 	{
-		strerror(errno);
+		write(2, strerror(errno), ft_strlen(strerror(errno)));
 		return ;
 	}
 }

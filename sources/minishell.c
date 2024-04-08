@@ -6,13 +6,13 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:54:28 by cdutel            #+#    #+#             */
-/*   Updated: 2024/04/08 18:24:51 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/04/09 01:49:08 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_env(char **envp)
+char	**get_envp(char **envp)
 {
 	char	**env;
 
@@ -44,7 +44,7 @@ int	main(int argc, char **argv, char **envp)
 	char	*dest;
 	if (argc == 0 || !argv || !envp)
 		return (1);
-	env = get_env(envp);
+	env = get_envp(envp);
 	while (1)
 	{
 		dest = readline("minishell_try ");
@@ -53,23 +53,21 @@ int	main(int argc, char **argv, char **envp)
 
 		//pwd_bltin();
 
-		printf("AVANT\n");
-		env_bltin(env);
-
-		env = export_bltin(env, dest);
-
-		printf("\n\n\n\nAPRES\n");
-		env_bltin(env);
-
-		//printf("\n\n\n");
+		// env = export_bltin(env, dest);
+		// env_bltin(env);
+		// printf("\n\n\n");
+		// env = export_bltin(env, NULL);
 
 		// env = unset_bltin(env, "PROUT");
 		// env_bltin(env);
 
-		/*A terminer*/
-
-		// cd_bltin(argv[1]);
 		// env_bltin(env);
+		// printf("\n\n\n");
+		// cd_bltin(dest, &env);
+		// printf("\n\n\n");
+		// env_bltin(env);
+
+		/*A terminer*/
 
 		//echo_bltin_v1(argv[1], argv[2]);
 		free(dest);
