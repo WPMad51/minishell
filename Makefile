@@ -24,7 +24,7 @@ LIBFT = ./libft/libft.a
 FT_PRINTF = ./libft/ft_printf/libftprintf.a
 GNL = ./libft/get_next_line/libgnl.a
 GNL_NO_MALLOC = ./libft/gnl_no_malloc/libgnlnomalloc.a
-ALL_LIB = ${LIBFT} ${FT_PRINTF} ${GNL} ${GNL_NO_MALLOC}
+ALL_LIB = ${LIBFT} ${FT_PRINTF} ${GNL} ${GNL_NO_MALLOC} -lreadline
 
 ##########################Rules############################
 

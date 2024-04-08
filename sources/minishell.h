@@ -6,7 +6,7 @@
 /*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 14:51:40 by cdutel            #+#    #+#             */
-/*   Updated: 2024/04/04 10:09:45 by cdutel           ###   ########.fr       */
+/*   Updated: 2024/04/08 14:52:56 by cdutel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 # include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 # include <signal.h>
 # include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/ioctl.h>
