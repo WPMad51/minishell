@@ -3,75 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdutel <cdutel@student.42.fr>              +#+  +:+       +#+        */
+/*   By: dwayenbo <dwayenbo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/03 15:54:28 by cdutel            #+#    #+#             */
-/*   Updated: 2024/04/09 01:49:08 by cdutel           ###   ########.fr       */
+/*   Created: 2024/05/14 10:35:14 by dwayenbo          #+#    #+#             */
+/*   Updated: 2024/06/04 16:51:46 by dwayenbo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_envp(char **envp)
-{
-	char	**env;
+volatile sig_atomic_t	g_global;
 
-	int (i) = 0;
-	int (j) = 0;
-	while (envp[i])
-		i++;
-	env = malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while (envp[i])
-	{
-		env[i] = malloc(sizeof(char) * (ft_strlen(envp[i]) + 1));
-		j = 0;
-		while (envp[i][j])
-		{
-			env[i][j] = envp[i][j];
-			j++;
-		}
-		env[i][j] = '\0';
-		i++;
-	}
-	env[i] = NULL;
-	return (env);
+void	ft_sleep(double n)
+{
+	double	i;
+
+	i = 0.0;
+	while (i++ < n * 100000000)
+		;
 }
 
-int	main(int argc, char **argv, char **envp)
+static void	print_intro(void)
 {
-	char	**env;
-	char	*dest;
-	if (argc == 0 || !argv || !envp)
-		return (1);
-	env = get_envp(envp);
-	while (1)
+	printf("\n\n\n\n\n\n\n\n\n\n\n");
+	printf("\n\n\n\n\n\n\n\n\n\n\n");
+	printf("\n\n\n\n\n\n\n\n\n\n\n");
+	printf("\n\n\n\n\n\n\n\n\n\n\n");
+	printf("\n\n\n\n\n\n\n\n\n\n\n");
+	printf("\n\n\n\n\n\n\n\n\n\n\n");
+	printf("\033[%d;%dH", 0, 0);
+	if (INTRO)
 	{
-		dest = readline("minishell_try ");
-
-		//env_bltin(env);
-
-		//pwd_bltin();
-
-		// env = export_bltin(env, dest);
-		// env_bltin(env);
-		// printf("\n\n\n");
-		// env = export_bltin(env, NULL);
-
-		// env = unset_bltin(env, "PROUT");
-		// env_bltin(env);
-
-		// env_bltin(env);
-		// printf("\n\n\n");
-		// cd_bltin(dest, &env);
-		// printf("\n\n\n");
-		// env_bltin(env);
-
-		/*A terminer*/
-
-		//echo_bltin_v1(argv[1], argv[2]);
-		free(dest);
+		ft_sleep(1);
+		printf(ART2);
+		ft_sleep(1);
+		printf(ART3);
+		ft_sleep(1);
+		printf(ART4);
+		ft_sleep(1);
+		printf("\n\n\n\n\n\n\n\n\n\n\n");
+		printf("\n\n\n\n\n\n\n\n\n\n\n");
+		printf("\n\n\n\n\n\n\n\n\n\n\n");
+		printf("\n\n\n\n\n\n\n\n\n\n\n");
+		printf("\n\n\n\n\n\n\n\n\n\n\n");
+		printf("\n\n\n\n\n\n\n\n\n\n\n");
+		printf("\033[%d;%dH", 0, 0);
 	}
-	ft_le_xav(env);
-	return (0);
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	int		exit_status;
+	t_mini	mini;
+
+	(void)ac;
+	(void)av;
+	ft_bzero(&mini, sizeof(t_mini));
+	if (init_mini_struct(&mini, envp) == EXIT_FAILURE)
+		return (free_everything(&mini, ERR_INIT));
+	signal_ms();
+	if ((mini.is_tty && !DEBUG_TTY) || DEBUG_RL)
+	{
+		print_intro();
+		exit_status = readline_loop(&mini, PROMPT_RL);
+	}
+	else
+	{
+		signal(SIGINT, SIG_IGN);
+		exit_status = gnl_loop(&mini);
+	}
+	mini.line = NULL;
+	if (!exit_status)
+		exit_status = mini.exit_status;
+	return (free_everything(&mini, exit_status));
 }
